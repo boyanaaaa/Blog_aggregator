@@ -1,0 +1,15 @@
+import { db } from "../../index";
+import { users } from "../../../schema";
+
+export async function createUser(name: string) {
+  const [result] = await db.insert(users).values({ name: name }).returning();
+  return result;
+}
+
+export async function getUser(name: string) {
+  const result = await db.query.users.findFirst({
+    where: (tableColumns, operators) => operators.eq(tableColumns.name, name),
+  });
+
+  return result;
+}
