@@ -3,11 +3,13 @@ import { handlerLogin } from "./commandHandler";
 import { runCommand } from "./commandHandler";
 import { CommandsRegistry } from "./commandHandler";
 import { handlerRegister } from "./commandHandler";
+import { handlerReset } from "./commandHandler";
 
 async function main() {
   const registry: CommandsRegistry = {};
   registerCommand(registry, "login", handlerLogin);
   registerCommand(registry, "register", handlerRegister);
+  registerCommand(registry, "reset", handlerReset);
 
   const cliArgs = process.argv.slice(2);
   if (cliArgs.length === 0) {

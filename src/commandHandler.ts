@@ -1,5 +1,5 @@
 import { setUser } from "./config";
-import { createUser, getUser } from "../lib/db/queries/users";
+import { createUser, getUser, resetTable } from "../lib/db/queries/users";
 
 export type CommandHandler = (
   cmdName: string,
@@ -42,25 +42,20 @@ export async function runCommand(
 }
 
 export async function handlerRegister(cmdName: string, ...args: string[]) {
-  // 1. Check that exactly one argument was passed in `args`.
-  //    If not, throw an error (look at handlerLogin for the pattern)
   if (args.length !== 1) {
     throw new Error("Please write your name!");
   }
-
-  // 2. Grab the name from args
   const userName = args[0];
-
-  // 3. Call createUser with that name, and await the result
-  //    (remember: createUser is async, so it returns a Promise)
   const user = await createUser(userName);
-
-  // 4. Update the config with the new user's name using setUser
   setUser(user.name);
-
-  // 5. console.log a success message
   console.log("User registered successfully!");
-
-  // 6. console.log the user object for debugging
   console.log(user);
+}
+
+export async function handlerReset(cmdName: string, ...args: string[]) {
+  if (args.length !== 0) {
+    throw new Error("Please write only reset function.");
+  }
+  await resetTable();
+  console.log("Successful reset.");
 }
