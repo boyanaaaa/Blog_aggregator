@@ -1,5 +1,11 @@
 import { setUser } from "./config";
-import { createUser, getUser, resetTable } from "../lib/db/queries/users";
+import {
+  createUser,
+  getUser,
+  listUsers,
+  resetTable,
+} from "../lib/db/queries/users";
+import { readConfig } from "./config";
 
 export type CommandHandler = (
   cmdName: string,
@@ -58,4 +64,20 @@ export async function handlerReset(cmdName: string, ...args: string[]) {
   }
   await resetTable();
   console.log("Successful reset.");
+}
+
+export async function getUsers(cmdName: string, ...args: string[]) {
+  if (args.length !== 0) {
+    throw new Error("Please write only list function.");
+  }
+
+  const userList = await listUsers();
+  const config = readConfig();
+  for (const user of userList) {
+    if (user.name == config.currentUserName) {
+      console.log(`* ${user.name} (current)`);
+    } else {
+      console.log(`* ${user.name}`);
+    }
+  }
 }

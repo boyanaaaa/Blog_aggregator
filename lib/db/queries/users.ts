@@ -17,3 +17,8 @@ export async function getUser(name: string) {
 export async function resetTable() {
   await db.delete(users);
 }
+
+export async function listUsers() {
+  const result = await db.select().from(users);
+  return result;
+}

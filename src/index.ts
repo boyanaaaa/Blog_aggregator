@@ -1,4 +1,4 @@
-import { registerCommand } from "./commandHandler";
+import { getUsers, registerCommand } from "./commandHandler";
 import { handlerLogin } from "./commandHandler";
 import { runCommand } from "./commandHandler";
 import { CommandsRegistry } from "./commandHandler";
@@ -10,6 +10,7 @@ async function main() {
   registerCommand(registry, "login", handlerLogin);
   registerCommand(registry, "register", handlerRegister);
   registerCommand(registry, "reset", handlerReset);
+  registerCommand(registry, "users", getUsers);
 
   const cliArgs = process.argv.slice(2);
   if (cliArgs.length === 0) {
