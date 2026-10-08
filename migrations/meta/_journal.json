@@ -8,6 +8,20 @@
       "when": 1790594146323,
       "tag": "0000_smart_killmonger",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791372338370,
+      "tag": "0001_lucky_blacklash",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791374194051,
+      "tag": "0002_aberrant_saracen",
+      "breakpoints": true
     }
   ]
 }

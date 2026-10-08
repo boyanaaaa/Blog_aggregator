@@ -5,7 +5,11 @@ import {
   listUsers,
   resetTable,
 } from "../lib/db/queries/users";
+
+import { createFeed, printFeed } from "../lib/db/queries/feeds";
 import { readConfig } from "./config";
+
+import { fetchFeed } from "../lib/rss";
 
 export type CommandHandler = (
   cmdName: string,
@@ -80,4 +84,31 @@ export async function getUsers(cmdName: string, ...args: string[]) {
       console.log(`* ${user.name}`);
     }
   }
+}
+
+export async function handlerAgg(cmdName: string) {
+  const feed = await fetchFeed("https://www.wagslane.dev/index.xml");
+  console.log(JSON.stringify(feed, null, 2));
+}
+
+export async function handlerAddFeed(cmdName: string, ...args: string[]) {
+  if (args.length !== 2) {
+    throw new Error(`usage: ${cmdName} <feed_name> <url>`);
+  }
+
+  const config = readConfig();
+  const currentUserName = config.currentUserName;
+  const user = await getUser(currentUserName);
+
+  if (!user) {
+    throw new Error("Current user not found");
+  }
+  const name = args[0];
+  const url = args[1];
+
+  const feed = await createFeed(name, url, user.id);
+  if (!feed) {
+    throw new Error("Failed to create feed");
+  }
+  printFeed(feed, user);
 }
