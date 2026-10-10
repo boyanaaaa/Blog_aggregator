@@ -2,6 +2,7 @@ import {
   getUsers,
   handlerAddFeed,
   handlerAgg,
+  handlerFeedsList,
   registerCommand,
 } from "./commandHandler";
 import { handlerLogin } from "./commandHandler";
@@ -18,6 +19,7 @@ async function main() {
   registerCommand(registry, "users", getUsers);
   registerCommand(registry, "agg", handlerAgg);
   registerCommand(registry, "addfeed", handlerAddFeed);
+  registerCommand(registry, "feeds", handlerFeedsList);
 
   console.log(Object.keys(registry));
 

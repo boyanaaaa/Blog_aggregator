@@ -2,6 +2,7 @@ import { db } from "../../index";
 import { feeds } from "../../../schema";
 
 import { Feed, User } from "../../../schema";
+import { getUserById } from "./users";
 
 export async function createFeed(
   feed_name: string,
@@ -25,4 +26,8 @@ export async function printFeed(feed: Feed, user: User) {
     User_id: ${feed.userId},
     User_name: ${user.name},
   `);
+}
+
+export async function getFeeds() {
+  return await db.select().from(feeds);
 }

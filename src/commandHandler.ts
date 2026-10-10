@@ -2,6 +2,7 @@ import { setUser } from "./config";
 import {
   createUser,
   getUser,
+  getUserById,
   listUsers,
   resetTable,
 } from "../lib/db/queries/users";
@@ -10,6 +11,7 @@ import { createFeed, printFeed } from "../lib/db/queries/feeds";
 import { readConfig } from "./config";
 
 import { fetchFeed } from "../lib/rss";
+import { getFeeds } from "../lib/db/queries/feeds";
 
 export type CommandHandler = (
   cmdName: string,
@@ -111,4 +113,15 @@ export async function handlerAddFeed(cmdName: string, ...args: string[]) {
     throw new Error("Failed to create feed");
   }
   printFeed(feed, user);
+}
+
+export async function handlerFeedsList(cmdName: string, ...args: string[]) {
+  const feedsList = await getFeeds();
+  for (let feed of feedsList) {
+    const user = await getUserById(feed.userId);
+    if (!user) {
+      throw new Error(`Failed to find user for feed ${feed.id}`);
+    }
+    console.log(feed.name, feed.url, user.name);
+  }
 }
